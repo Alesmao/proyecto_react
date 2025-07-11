@@ -1,4 +1,32 @@
+import React from "react";
+import { auth, googleProvider } from "../../firebase";
+import { signInWithPopup } from "firebase/auth";
+import Swal from "sweetalert2";
+
+
+
+
+
 function LoginPage() {
+  const handleGoogleLogin = () => {
+    signInWithPopup(auth, googleProvider)
+      .then((result) => {
+        const user = result.user;
+        Swal.fire({
+          title: "¡Bienvenido!",
+          text: `Sesión iniciada con Google: ${user.email}`,
+          icon: "success",
+          timer: 2000,
+          showConfirmButton: false
+        }).then(() => {
+          window.location.href = "/dashboard";
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+        Swal.fire("Error", "No se pudo iniciar sesión con Google.", "error");
+      });
+  };
     return (
         <div className="container vh-100 d-flex justify-content-center align-items-center">
       <div className="card shadow-sm" style={{ maxWidth: '400px', width: '100%' }}>
@@ -33,16 +61,30 @@ function LoginPage() {
                 Recuérdame
               </label>
             </div>
-            <button type="submit" className="btn btn-primary w-100">Entrar</button>
+            <div>
+            <div>
+  <button type="button" onClick={handleGoogleLogin}>
+    Entrar
+  </button>
+  <a href="/register">¿No tienes cuenta? Regístrate</a><br />
+  <a href="/forgot">¿Olvidaste tu contraseña?</a>
+</div>
+
+  <button type="button" onClick={handleGoogleLogin}>
+    Iniciar sesión con Google
+  </button>
+  
+</div>
+
           </form>
         </div>
         <div className="card-footer text-center">
           <small className="text-muted">
-            ¿No tienes cuenta? <a href="./html/formulario.html">Regístrate</a>
+            ¿No tienes cuenta? <a href="./html/formulario.html">e</a>
           </small>
           <br />
           <small className="text-muted">
-            ¿Olvidaste tu contraseña? <a href="./html/recuperar.html">Recuperar Contraseña</a>
+          <a href="./html/recuperar.html"></a>
           </small>
         </div>
       </div>
